@@ -25,7 +25,7 @@ const alternativeApiEndpoints = [
 // Contract constants
 export const CONTRACT_ADDRESS = "0x5b4b6e2e43bd03f96692402f36c0103349c87dde06cb921552dace4db9dbf8cc";
 export const COLLECTION_NAME = "UFC Collection";
-export const FUNCTION_NAME = "mint_token_for"; // The function to call in the contract
+export const FUNCTION_NAME = "mint_token"; // The function to call in the contract
 
 // Helper function to verify the collection exists
 export async function verifyCollection(): Promise<boolean> {

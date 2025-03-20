@@ -192,15 +192,20 @@ const AptosWalletClient = () => {
       console.log(`Using collection name: ${COLLECTION_NAME}`);
       
       // Try a simplified version of the transaction
-      // Sometimes the Petra wallet has issues with too many arguments
+      // The mint_token function requires more parameters based on the contract
       const simplifiedPayload = {
-        function: `${CONTRACT_ADDRESS}::ufc_nft::mint_nft`,
+        function: `${CONTRACT_ADDRESS}::ufc_nft::mint_token`,
         type_arguments: [],
         arguments: [
-          tokenId.toString(),
-          `Flow Bridge NFT #${selectedNftId}`,
-          `UFC NFT bridged from Flow (ID: ${selectedNftId})`,
-          `https://ufc-nft-bridge.example/metadata/${selectedNftId}`
+          tokenId.toString(),                                  // u64 token_id
+          `Flow Bridge NFT #${selectedNftId}`,                 // name
+          `UFC NFT bridged from Flow (ID: ${selectedNftId})`,  // description
+          `https://ufc-nft-bridge.example/metadata/${selectedNftId}`, // uri
+          `UFC Fighter ${selectedNftId}`,                      // fighter_name 
+          "Heavyweight",                                       // weight_class
+          "25-0",                                              // record
+          "1",                                                 // ranking
+          "1"                                                  // quantity
         ],
       };
       
@@ -285,15 +290,21 @@ const AptosWalletClient = () => {
       // or a different parameter format might be needed
       const tokenId = Math.floor(Math.random() * 10000) + 1;
       
-      // Try a minimal payload with just the collection name and token ID
+      // Use mint_token_for as an alternative which requires the wallet address
       const minimalPayload = {
-        function: `${CONTRACT_ADDRESS}::ufc_nft::create_token`,
+        function: `${CONTRACT_ADDRESS}::ufc_nft::mint_token_for`,
         type_arguments: [],
         arguments: [
-          COLLECTION_NAME,
-          `Flow Bridge NFT #${selectedNftId}`,
-          `https://ufc-nft-bridge.example/metadata/${selectedNftId}`,
-          "1"  // Simple quantity argument
+          user.address,                                       // address recipient
+          tokenId.toString(),                                 // u64 token_id
+          `Flow Bridge NFT #${selectedNftId}`,                // name
+          `UFC NFT bridged from Flow (ID: ${selectedNftId})`, // description  
+          `https://ufc-nft-bridge.example/metadata/${selectedNftId}`, // uri
+          `UFC Fighter ${selectedNftId}`,                     // fighter_name
+          "Heavyweight",                                      // weight_class
+          "25-0",                                             // record
+          "1",                                                // ranking
+          "1"                                                 // quantity
         ],
       };
       
@@ -358,10 +369,10 @@ const AptosWalletClient = () => {
         return true;
       }
       
-      const mintFunction = exposedFunctions.find((f: any) => f.name === "mint_token_for");
+      const mintFunction = exposedFunctions.find((f: any) => f.name === "mint_token");
       
       if (!mintFunction) {
-        setError(`Function mint_token_for not found in the contract module. Available functions: ${exposedFunctions.map((f: any) => f.name).join(", ")}`);
+        setError(`Function mint_token not found in the contract module. Available functions: ${exposedFunctions.map((f: any) => f.name).join(", ")}`);
         setMintTxStatus(null);
         return false;
       }
