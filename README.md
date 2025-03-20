@@ -1,40 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# UFC NFT Bridge
 
-## Getting Started
+A bridge for transferring UFC NFTs between Flow and Aptos blockchains. This application demonstrates cross-chain NFT bridging capabilities.
 
-First, run the development server:
+## ⚠️ IMPORTANT: APTOS DEVNET REQUIRED ⚠️
+
+This application requires the Petra wallet to be connected to **Aptos Devnet**. The bridge will not work on Mainnet or other networks.
+
+Please ensure your Petra wallet is set to Devnet before attempting to use this application.
+
+## Features
+
+- Select and view UFC NFTs from Flow blockchain
+- Bridge selected Flow NFTs to Aptos blockchain (Devnet)
+- Mint new UFC NFTs on Aptos that represent the bridged Flow NFTs
+- Uses the existing "UFC Collection" on Aptos Devnet
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v16 or newer)
+- [Flow CLI](https://docs.onflow.org/flow-cli/install/) for Flow blockchain interaction
+- [Petra Wallet](https://petra.app/) browser extension for Aptos blockchain interaction
+  - **Must be configured to use Devnet**
+- [Flow Wallet](https://docs.onflow.org/flow-wallet/) for Flow blockchain interaction
+
+## Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/ufc-nft-bridge.git
+cd ufc-nft-bridge
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Bridging an NFT from Flow to Aptos
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+1. Connect your Flow wallet on the home page.
+2. Mint a UFC NFT on Flow or select one from your existing collection.
+3. Click "Bridge to Aptos" on the desired NFT card.
+4. You'll be redirected to the Aptos connect page.
+5. **Ensure your Petra wallet is set to Devnet** before connecting.
+6. Connect your Petra wallet.
+7. Click "Mint UFC NFT on Aptos" to complete the bridge process.
+8. The NFT will be minted on Aptos with metadata referencing the original Flow NFT.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+- `src/app`: Next.js application pages and routes
+- `src/components`: React components
+- `src/cadence`: Cadence smart contracts for Flow blockchain
+- `src/aptos`: Move smart contracts for Aptos blockchain 
+- `src/lib`: Utility functions and configuration
+- `src/types`: TypeScript type definitions
 
-To learn more about Next.js, take a look at the following resources:
+## Smart Contracts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+### Flow Contracts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Located in `src/cadence/contracts`. The main contract is `UFC_NFT.cdc` which handles the NFT functionality on Flow.
 
-## Deploy on Vercel
+### Aptos Contracts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Located in `src/aptos/sources`. The main module is `UFC_NFT.move` which implements the NFT functionality on Aptos. The contract is already deployed at address `0x5b4b6e2e43bd03f96692402f36c0103349c87dde06cb921552dace4db9dbf8cc` with a collection named "UFC Collection" on **Aptos Devnet**.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Aptos Integration Details
+
+The application uses the Petra wallet to interact with the Aptos blockchain. When minting an NFT on Aptos:
+
+1. We use the existing "UFC Collection" that's already deployed on Devnet
+2. We generate a unique ID for each NFT to prevent collisions
+3. We include references to the original Flow NFT in the metadata
+4. Minting is done through the `mint_token_for` function in the UFC_NFT contract
+
+## Troubleshooting
+
+- **"Account not found by address"**: This error occurs if your Petra wallet is not set to Devnet. Switch your wallet network to Devnet and try again.
+- **"Collection not found"**: The application verifies the existence of the UFC Collection on Devnet. If it can't be found, check that you're using the correct network and contract address.
+
+## License
+
+[MIT](LICENSE)
