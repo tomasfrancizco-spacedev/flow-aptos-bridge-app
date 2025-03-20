@@ -50,7 +50,7 @@ npm run dev
 
 ### Bridging an NFT from Flow to Aptos
 
-1. Connect your Flow wallet on the home page.
+1. Connect your Flow wallet **on Testnet** on the home page.
 2. Mint a UFC NFT on Flow or select one from your existing collection.
 3. Click "Bridge to Aptos" on the desired NFT card.
 4. You'll be redirected to the Aptos connect page.
@@ -72,7 +72,7 @@ npm run dev
 
 ### Flow Contracts
 
-Located in `src/cadence/contracts`. The main contract is `UFC_NFT.cdc` which handles the NFT functionality on Flow.
+Located in `src/cadence/contracts`. The main contract is `UFC_NFT.cdc` which handles the NFT functionality on Flow. The contract is already deployed at address `0xd049c2e1e3ec47da` on **Flow Testnet**.
 
 ### Aptos Contracts
 
